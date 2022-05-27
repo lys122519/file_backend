@@ -14,6 +14,8 @@ public class UserDTO {
     private Integer id;
     private String username;
     private String password;
+    private String phone;
+    private String newPassword;
     private String nickname;
     private String avatarUrl;
     private String token;
@@ -51,6 +53,22 @@ public class UserDTO {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getNewPassword() {
+        return newPassword;
+    }
+
+    public void setNewPassword(String newPassword) {
+        this.newPassword = newPassword;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     public String getToken() {

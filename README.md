@@ -1,18 +1,37 @@
-# file_backend
-# 一个经典的管理系统
+## 一个经典的管理系统（很杂）
+## 🔧 技术栈
+### 前端
+- 框架：Vue2
 
-# 🔧 技术栈
-## 后端
-Java 8
-开发框架：SpringBoot 2.x
+- 组件库：ElementUI 2
+- 请求：Axios
+- 路由：Vue Router
+- 状态管理：Vuex
 
-数据访问：MyBatis + MyBatis Plus
+### 后端
+- Java 8
+- 开发框架：SpringBoot 2.x
+- 数据访问：MyBatis + MyBatis Plus
+- 项目管理：Maven
+- 中间件：Redis
+- 接口文档：Swagger （+ Knife4j）
 
-项目管理：Maven
 
-接口文档：Swagger （+ Knife4j）
+### 存储
+- 数据库：MySQL8.0
 
-## 存储
-数据库：MySQL8.0
+- 对象存储：HuaWei OSS
 
-对象存储：HuaWei OSS
+
+### 功能
+- 登录/注册
+- 数据统计
+- 用户管理
+- 角色管理
+- 菜单管理
+- 文件管理
+- 课程管理
+- 文章管理
+- 
+- 视频播放
+- 文章

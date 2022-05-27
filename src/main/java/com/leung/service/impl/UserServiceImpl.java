@@ -111,6 +111,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
 
     /**
      * 查找
+     *
      * @param page
      * @param user
      * @return
@@ -118,6 +119,32 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     @Override
     public Page<User> findPage(Page<User> page, User user) {
         return userMapper.findPage(page, user.getUsername(), user.getEmail(), user.getAddress());
+    }
+
+    /**
+     * 修改密码
+     *
+     * @param userDTO
+     */
+    @Override
+    public void updatePassword(UserDTO userDTO) {
+
+        User user = new User();
+
+        String newPassword = userDTO.getNewPassword();
+        String oldPassword = userDTO.getPassword();
+        if(newPassword.equals(oldPassword)){
+            throw new ServiceException(Constants.CODE_600, "两次密码一致");
+        }else{
+            //密码不一致
+            user.setId(userDTO.getId());
+            user.setPassword(newPassword);
+        }
+        user.setPassword(userDTO.getNewPassword());
+        int result = userMapper.updateById(user);
+        if (result < 1) {
+            throw new ServiceException(Constants.CODE_600, "修改密码失败");
+        }
     }
 
 

@@ -160,6 +160,19 @@ public class UserController {
     }
 
     /**
+     * 修改密码
+     * @param UserDTO
+     * @return
+     */
+    @PostMapping("/password")   //    /user/password
+    public Result password(@RequestBody UserDTO userDTO) {
+        userService.updatePassword(userDTO);
+        return Result.success();
+    }
+
+
+
+    /**
      * 注册
      *
      * @param user

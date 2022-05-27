@@ -20,5 +20,10 @@ public interface IUserService extends IService<User> {
     UserDTO login(UserDTO userDTO);
     User register(User user);
 
+
+
     Page<User> findPage(Page<User> page, User user);
+
+    //修改密码
+    void updatePassword(UserDTO userDTO);
 }
