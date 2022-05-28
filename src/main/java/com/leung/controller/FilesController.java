@@ -16,6 +16,7 @@ import com.leung.mapper.FilesMapper;
 import com.leung.service.IFilesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -135,6 +136,7 @@ public class FilesController {
 
     /**
      * 根据id查询
+     *
      * @param id
      * @return
      */

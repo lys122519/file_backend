@@ -2,6 +2,8 @@ server:
   port: 9090
 
 spring:
+  profiles:
+    include: conf
   datasource:
     druid:
       driver-class-name: com.mysql.cj.jdbc.Driver
@@ -51,7 +53,3 @@ mybatis-plus:
 
 
 
-# 文件路径
-files:
-  upload:
-    path: E:/Work/Vue_Springboot/file/

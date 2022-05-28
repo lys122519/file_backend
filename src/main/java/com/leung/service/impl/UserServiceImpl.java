@@ -260,7 +260,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
      */
     @Override
     public void resetPass(UserDTO userDTO) {
-        List<User> userList = checkUser(userDTO.getEmail());
+        checkUser(userDTO.getEmail());
         QueryWrapper<User> queryWrapper = new QueryWrapper<User>();
 
         queryWrapper.eq("email", userDTO.getEmail());
