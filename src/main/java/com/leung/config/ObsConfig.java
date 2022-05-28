@@ -13,15 +13,15 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class ObsConfig {
     @Value("${files.upload.ak}")
-    private static String ak;
+    private String ak;
     @Value("${files.upload.sk}")
-    private static String sk;
+    private String sk;
     @Value("${files.upload.endpoint}")
-    private static String endPoint;
+    private String endPoint;
 
 
     @Bean
-    public ObsClient getObsClient(){
+    public ObsClient getObsClient() {
         ObsClient obsClient = new ObsClient(ak, sk, endPoint);
         return obsClient;
     }

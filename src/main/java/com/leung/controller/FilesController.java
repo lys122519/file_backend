@@ -14,6 +14,7 @@ import com.leung.entity.Files;
 import com.leung.entity.User;
 import com.leung.mapper.FilesMapper;
 import com.leung.service.IFilesService;
+import com.leung.utils.OBSUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
@@ -51,7 +52,8 @@ public class FilesController {
     private StringRedisTemplate stringRedisTemplate;
 
 
-    private static final String BASE_URL = "http://localhost:9090/file/";
+    //private static final String BASE_URL = "http://localhost:9090/file/";
+    private static final String BASE_URL = "https://file-but.obs.cn-north-4.myhuaweicloud.com/";
 
     /**
      * 单个删除
@@ -81,7 +83,6 @@ public class FilesController {
      */
     @PostMapping("/update")
     public Result save(@RequestBody Files file) {
-        //System.out.println("-------------------------------");
 
         fileService.updateById(file);
 
@@ -166,9 +167,8 @@ public class FilesController {
         return Result.success(page);
     }
 
-
     /**
-     * 文件上传接口
+     * 文件上传接口 OBS
      *
      * @param file
      * @return
@@ -211,6 +211,8 @@ public class FilesController {
         } else {
             //无相同md5文件，则上传
             finalUrl = BASE_URL + fileUUID;
+            OBSUtils.uploadFile(fileUUID, uploadFile.getPath());
+
         }
 
         // 存储数据库
@@ -226,11 +228,80 @@ public class FilesController {
         List<Files> list = fileService.list(null);
         setRedisCache(Constants.FILES_KEY, JSONUtil.toJsonStr(list));
 
-        //flushRedis(Constants.FILES_KEY);
-
         return finalUrl;
 
     }
+
+
+
+
+
+    ///**
+    // * 文件上传接口
+    // *
+    // * @param file
+    // * @return
+    // * @throws IOException
+    // */
+    //@PostMapping("/upload")
+    //public String upload(@RequestParam MultipartFile file) throws IOException {
+    //    String originalFilename = file.getOriginalFilename();
+    //    String type = FileUtil.extName(originalFilename);
+    //    long size = file.getSize();
+    //
+    //    //存储到磁盘
+    //    File uploadParentFile = new File(fileUploadPath);
+    //
+    //    //判断配置的文件目录是否存在，不存在则创造新的文件目录
+    //    if (!uploadParentFile.exists()) {
+    //        uploadParentFile.mkdirs();
+    //    }
+    //
+    //    // 定义一个文件的唯一标识码
+    //    String uuid = IdUtil.fastSimpleUUID();
+    //
+    //    // 文件名加后缀
+    //    String fileUUID = uuid + StrUtil.DOT + type;
+    //    File uploadFile = new File(fileUploadPath + fileUUID);
+    //
+    //    //文件最终URL
+    //    String finalUrl = "";
+    //    // 将获取到的文件存储到磁盘目录
+    //    file.transferTo(uploadFile);
+    //    //获取文件md5
+    //    String fileMD5 = SecureUtil.md5(uploadFile);
+    //    //根据md5查询是否有重复文件
+    //    String urlFromSql = fileService.selectFileByMD5(fileMD5);
+    //    //从数据库查不到相同的md5，则上传，否则将已有文件的url其该文件最终url
+    //    if (urlFromSql != null) {
+    //        finalUrl += urlFromSql;
+    //        //相同md5的文件存在，删除已保存文件
+    //        uploadFile.delete();
+    //    } else {
+    //        //无相同md5文件，则上传
+    //        finalUrl = BASE_URL + fileUUID;
+    //        OBSUtils.uploadFile(file.getName(), uploadFile.getPath());
+    //
+    //    }
+    //
+    //    // 存储数据库
+    //    Files saveFile = new Files();
+    //    saveFile.setName(originalFilename);
+    //    saveFile.setType(type);
+    //    saveFile.setSize(size / 1024);
+    //    saveFile.setUrl(finalUrl);
+    //    saveFile.setMd5(fileMD5);
+    //    fileService.saveFile(saveFile);
+    //
+    //    //设置缓存
+    //    List<Files> list = fileService.list(null);
+    //    setRedisCache(Constants.FILES_KEY, JSONUtil.toJsonStr(list));
+    //
+    //    //flushRedis(Constants.FILES_KEY);
+    //
+    //    return finalUrl;
+    //
+    //}
 
     /**
      * 文件下载接口 http://localhost:9090/file/{fileUUID}
