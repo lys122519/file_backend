@@ -15,6 +15,8 @@ public class UserDTO {
     private String username;
     private String password;
     private String phone;
+    private String email;
+    private String code;
     private String newPassword;
     private String nickname;
     private String avatarUrl;
@@ -61,6 +63,22 @@ public class UserDTO {
 
     public void setNewPassword(String newPassword) {
         this.newPassword = newPassword;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 
     public String getPhone() {

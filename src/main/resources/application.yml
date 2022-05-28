@@ -21,10 +21,20 @@ spring:
     redis:
      time-to-live: 3600s # 有效时长
      cache-null-values: false # 是否允许存储空值
+#上传文件大小
   servlet:
     multipart:
       max-file-size: 100MB
       max-request-size: 100MB
+#  邮件
+  mail:
+    host: smtp.qq.com
+    username: 514955048@qq.com
+    password: hmklfnocknwjcahg
+    protocol: smtp
+    default-encoding: utf-8
+    port: 587
+# 持久层
 mybatis-plus:
   mapper-locations: classpath:mapper/*.xml
   configuration:
@@ -38,6 +48,10 @@ mybatis-plus:
 
 
 
+
+
+
+# 文件路径
 files:
   upload:
     path: E:/Work/Vue_Springboot/file/

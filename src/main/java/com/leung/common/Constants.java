@@ -40,4 +40,11 @@ public interface Constants {
      * redis key
      */
     String FILES_KEY = "FILES_FRONT_ALL";
+
+    /**
+     * redis 邮箱登录code
+     */
+    String MAIL_CODE = "MAIL_CODE";
+
+
 }

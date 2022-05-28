@@ -11,9 +11,12 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.leung.common.Constants;
 import com.leung.common.Result;
+import com.leung.config.AuthAccess;
 import com.leung.entity.dto.UserDTO;
+import com.leung.exception.ServiceException;
 import com.leung.utils.TokenUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -41,8 +44,10 @@ import javax.servlet.http.HttpServletResponse;
 @RestController
 @RequestMapping("/user")
 public class UserController {
+
     @Resource
     private IUserService userService;
+
 
     /**
      * 新增或修改
@@ -90,6 +95,7 @@ public class UserController {
 
     /**
      * 根据身份信息查找user
+     *
      * @param role
      * @return
      */
@@ -149,9 +155,11 @@ public class UserController {
     /**
      * 登录
      */
-    @PostMapping("/login")
-    public Result login(@RequestBody UserDTO userDTO) {
-        if (StrUtil.isNotBlank(userDTO.getUsername()) || StrUtil.isNotBlank(userDTO.getPassword())) {
+    @PostMapping("/loginAccount")
+    public Result loginAccount(@RequestBody UserDTO userDTO) {
+        String username = userDTO.getUsername();
+        String password = userDTO.getPassword();
+        if (StrUtil.isNotBlank(username) || StrUtil.isNotBlank(password)) {
 
             return Result.success(userService.login(userDTO));
         } else {
@@ -159,9 +167,30 @@ public class UserController {
         }
     }
 
+
+    /**
+     * 邮箱 验证码 登录
+     *
+     * @param userDTO
+     * @return
+     */
+    @AuthAccess
+    @PostMapping("/loginEmail")
+    public Result loginEmail(@RequestBody UserDTO userDTO) {
+        String email = userDTO.getEmail();
+        String code = userDTO.getCode();
+        if (StrUtil.isNotBlank(email) || StrUtil.isNotBlank(code)) {
+            return Result.success(userService.loginEmail(userDTO));
+        } else {
+            return Result.error(Constants.CODE_400, "参数错误");
+        }
+    }
+
+
     /**
      * 修改密码
-     * @param UserDTO
+     *
+     * @param userDTO
      * @return
      */
     @PostMapping("/password")   //    /user/password
@@ -170,6 +199,25 @@ public class UserController {
         return Result.success();
     }
 
+    /**
+     * 忘记密码
+     *
+     * @param userDTO
+     * @return
+     */
+    @PostMapping("/forget")
+    public Result forget(@RequestBody UserDTO userDTO) {
+        String email = userDTO.getEmail();
+        String code = userDTO.getCode();
+        String password = userDTO.getNewPassword();
+        if (StrUtil.isNotBlank(email) || StrUtil.isNotBlank(code) || StrUtil.isNotBlank(password)) {
+            userService.resetPass(userDTO);
+            return Result.success();
+        } else {
+            return Result.error(Constants.CODE_400, "参数错误");
+        }
+
+    }
 
 
     /**
@@ -186,6 +234,26 @@ public class UserController {
             return Result.error(Constants.CODE_400, "参数错误");
         }
     }
+
+    /**
+     * 获取登录验证码
+     *
+     * @param email
+     * @return
+     */
+    @AuthAccess
+    @PostMapping("/email/{email}/{type}")
+    public Result sendEmailCode(@PathVariable String email, @PathVariable Integer type) {
+        if (StrUtil.isBlank(email)) {
+            throw new ServiceException(Constants.CODE_400, "参数错误");
+        }
+        if (type == null) {
+            throw new ServiceException(Constants.CODE_400, "参数错误");
+        }
+        userService.sendEmailCode(email, type);
+        return Result.success();
+    }
+
 
     /**
      * 导出接口
