@@ -1,8 +1,0 @@
-# 文件路径
-files:
-  upload:
-    path: E:/Work/Vue_Springboot/file/
-    ak: 3ZRRSHSVDVJNQB4K9Q2F
-    sk: onWB4AxC1DCHQ74VSRGi6lLsnRfr5CP1ViIZ43ZU
-    endpoint: obs.cn-north-4.myhuaweicloud.com
-    bucketname: file-but
